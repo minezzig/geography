@@ -1,9 +1,11 @@
-import styles from "./Option.module.css"
+import styles from "./Option.module.css";
+//
 
-export default function Option({ option, checkAnswer, i }) {
+export default function Option({ option, checkAnswer, selected, answered, guessStatus }) {
   return (
-    <div className={`${styles.option} ${option }`} onClick={() => checkAnswer(option)}>
+    <div className={`${styles.option} ${answered && (option === selected && styles[guessStatus] )}`} onClick={() => checkAnswer(option)}>
       {option}
+      {console.log(option, selected, styles[guessStatus])}
     </div>
   );
 }

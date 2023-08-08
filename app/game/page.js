@@ -8,9 +8,10 @@ export default function Game() {
   const [countries, setCountries] = useState([]);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState({});
-  const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState("❤ ❤ ❤");
+  const [answered, setAnswered] = useState(false);
+  const [guessStatus, setGuessStatus] = useState(null);
 
   // fetch api on load.  also immediately selects a flag.
   useEffect(() => {
@@ -62,22 +63,23 @@ export default function Game() {
   // check to see if answer is correct
   const checkAnswer = (option) => {
     console.log(lives.length);
+    setAnswered(true);
     if (option === selected.name.common) {
-      console.log("win")
-      setAnswered(true);
+      setGuessStatus("correct");
       setScore((prev) => (prev += 1));
-      setTimeout(pickOptions, 1000)
     } else {
-      console.log("try agian")
+      setGuessStatus("wrong");
       setLives((prev) => prev.slice(0, -2));
     }
+
+    setTimeout(pickOptions, 1000);
   };
 
   const resetGame = () => {
     setLives("❤ ❤ ❤");
     setScore(0);
     pickOptions();
-  }
+  };
 
   return (
     <>
@@ -92,21 +94,20 @@ export default function Game() {
               <Option
                 option={option?.name?.common}
                 checkAnswer={checkAnswer}
-                i={i}
+                selected={selected?.name?.common}
+                answered={answered}
+                guessStatus={guessStatus}
               />
             </li>
           ))}
-
-          {answered && (
-            <button className={styles.button} onClick={pickOptions}>
-              Next
-            </button>
-          )}
         </div>
       ) : (
         <>
-        <p>game over</p>
-        <button className={styles.button} onClick={resetGame}>Play Again</button></>
+          <p>game over</p>
+          <button className={styles.button} onClick={resetGame}>
+            Play Again
+          </button>
+        </>
       )}
     </>
   );

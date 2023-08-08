@@ -6,3 +6,12 @@
   text-align: center;
   cursor: pointer;
 }
+
+.correct {
+  background: lightseagreen;
+
+}
+
+.wrong {
+  background: salmon;
+}
