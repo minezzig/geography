@@ -73,6 +73,12 @@ export default function Game() {
     }
   };
 
+  const resetGame = () => {
+    setLives("❤ ❤ ❤");
+    setScore(0);
+    pickOptions();
+  }
+
   return (
     <>
       {lives.length ? (
@@ -98,7 +104,9 @@ export default function Game() {
           )}
         </div>
       ) : (
+        <>
         <p>game over</p>
+        <button className={styles.button} onClick={resetGame}>Play Again</button></>
       )}
     </>
   );
