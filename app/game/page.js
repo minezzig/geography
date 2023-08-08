@@ -50,7 +50,7 @@ export default function Game() {
         countries[Math.floor(Math.random() * countries.length)];
 
       if (optionList.includes(randomCountry)) {
-        --i;
+        i -= 1;
         break;
       }
       optionList.push(randomCountry);
@@ -62,7 +62,7 @@ export default function Game() {
 
   // check to see if answer is correct
   const checkAnswer = (option) => {
-    console.log(lives.length);
+    if ((score + 1) % 5 === 0 && score != 0) setLives((prev) => prev + " ❤");
     setAnswered(true);
     if (option === selected.name.common) {
       setGuessStatus("correct");
