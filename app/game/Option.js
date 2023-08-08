@@ -1,15 +1,8 @@
-export default function Option({ option, checkAnswer }) {
-  const style = {
-    border: "1px solid black",
-    background: "white",
-    width: 200,
-    margin: 10,
-    textAlign: "center",
-    cursor: "pointer"
-  };
+import styles from "./Option.module.css"
 
+export default function Option({ option, checkAnswer, i }) {
   return (
-    <div style={style} onClick={() => checkAnswer(option)}>
+    <div className={`${styles.option} ${option }`} onClick={() => checkAnswer(option)}>
       {option}
     </div>
   );

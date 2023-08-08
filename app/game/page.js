@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import styles from "./page.module.css";
 import SelectedCountry from "./SelectedCountry";
 import Option from "./Option";
 
@@ -7,7 +8,9 @@ export default function Game() {
   const [countries, setCountries] = useState([]);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState({});
-  const [answered, setAnswered] = useState(true);
+  const [answered, setAnswered] = useState(false);
+  const [score, setScore] = useState(0);
+  const [lives, setLives] = useState("❤ ❤ ❤");
 
   // fetch api on load.  also immediately selects a flag.
   useEffect(() => {
@@ -53,24 +56,50 @@ export default function Game() {
     }
     optionList.splice(Math.floor(Math.random() * 5), 0, selected);
     setOptions(optionList);
+    setAnswered(false);
   };
 
   // check to see if answer is correct
   const checkAnswer = (option) => {
-    if (option === selected.name.common) alert("correct");
+    console.log(lives.length);
+    if (option === selected.name.common) {
+      console.log("win")
+      setAnswered(true);
+      setScore((prev) => (prev += 1));
+      setTimeout(pickOptions, 1000)
+    } else {
+      console.log("try agian")
+      setLives((prev) => prev.slice(0, -2));
+    }
   };
 
   return (
     <>
-      <h1>Game</h1>
-      <SelectedCountry selected={selected} />
-      {options.map((option) => (
-        <li style={{ listStyleType: "none" }} key={Math.random()}>
-          <Option option={option?.name?.common} checkAnswer={checkAnswer} />
-        </li>
-      ))}
+      {lives.length ? (
+        <div>
+          <h1>Game</h1>
+          <SelectedCountry selected={selected} />
+          <p>Score: {score}</p>
+          <p>Lives: {lives}</p>
+          {options.map((option, i) => (
+            <li className={styles.listItem} key={Math.random()}>
+              <Option
+                option={option?.name?.common}
+                checkAnswer={checkAnswer}
+                i={i}
+              />
+            </li>
+          ))}
 
-      {answered && <button onClick={pickOptions}>Next</button>}
+          {answered && (
+            <button className={styles.button} onClick={pickOptions}>
+              Next
+            </button>
+          )}
+        </div>
+      ) : (
+        <p>game over</p>
+      )}
     </>
   );
 }
